@@ -1,0 +1,39 @@
+diff --git a/autoload/ale/fix/registry.vim b/autoload/ale/fix/registry.vim
+index 98f52232..7bb3bd40 100644
+--- a/autoload/ale/fix/registry.vim
++++ b/autoload/ale/fix/registry.vim
+@@ -165,6 +165,11 @@ let s:default_registry = {
+ \       'suggested_filetypes': ['hack'],
+ \       'description': 'Fix Hack files with hackfmt.',
+ \   },
++\   'hackfmtdiff': {
++\       'function': 'ale#fixers#hackfmtdiff#Fix',
++\       'suggested_filetypes': ['hack'],
++\       'description': 'Fix Hack files with hackfmtdiff.',
++\   },
+ \   'hfmt': {
+ \       'function': 'ale#fixers#hfmt#Fix',
+ \       'suggested_filetypes': ['haskell'],
+diff --git a/autoload/ale/fixers/hackfmtdiff.vim b/autoload/ale/fixers/hackfmtdiff.vim
+new file mode 100644
+index 00000000..1484f507
+--- /dev/null
++++ b/autoload/ale/fixers/hackfmtdiff.vim
+@@ -0,0 +1,16 @@
++" Author: Sam Howie <samhowie@gmail.com>
++" Description: Integration of hackfmt with ALE.
++
++call ale#Set('hack_hackfmt_executable', 'hackfmt')
++call ale#Set('hack_hackfmt_options', '')
++
++function! ale#fixers#hackfmtdiff#Fix(buffer) abort
++    let l:executable = ale#Var(a:buffer, 'hack_hackfmt_executable')
++    let l:options = ale#Var(a:buffer, 'hack_hackfmt_options')
++
++    return {
++    \   'read_temporary_file': 1,
++    \   'command': 'hg diff ' . bufname(a:buffer) . ' | ' . ale#Escape(l:executable)
++    \       . ' --diff; cat ' . bufname(a:buffer) . ' > %t'
++    \}
++endfunction
+

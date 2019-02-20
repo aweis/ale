@@ -185,6 +185,11 @@ let s:default_registry = {
 \       'suggested_filetypes': ['hack'],
 \       'description': 'Fix Hack files with hackfmt.',
 \   },
+\   'hackfmtdiff': {
+\       'function': 'ale#fixers#hackfmtdiff#Fix',
+\       'suggested_filetypes': ['hack'],
+\       'description': 'Fix Hack files with hackfmtdiff.',
+\   },
 \   'hfmt': {
 \       'function': 'ale#fixers#hfmt#Fix',
 \       'suggested_filetypes': ['haskell'],
